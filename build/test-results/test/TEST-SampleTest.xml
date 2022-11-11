@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="SampleTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-11-11T00:45:44" hostname="CZ02197" time="0.025">
+  <properties/>
+  <testcase name="simpleDeletionTest()" classname="SampleTest" time="0.025"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
