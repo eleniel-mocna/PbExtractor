@@ -94,12 +94,12 @@ class GitExtractor(private val directory: File, private val resultFile: File) {
 fun main(args: Array<String>) {
     val repoPath: String
     val outputFile: String
-    val limit: Int = if (args.size==3) args[2].toInt() else 0
+    val limit: Int = if (args.size == 3) args[2].toInt() else 100
     if (args.size >= 2) {
         repoPath = args[0]
         outputFile = args[1]
     } else {
-        repoPath = "."
+        repoPath = "../intellij-community"
         outputFile = "problems.json"
     }
     println("Extracting from $repoPath to $outputFile (limit: $limit commits)")

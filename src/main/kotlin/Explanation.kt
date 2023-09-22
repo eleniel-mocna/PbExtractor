@@ -85,6 +85,9 @@ class Explanation(private val condition: Condition, private val edit: TextEdit) 
                 return edit.apply(input, i)
             }
         }
+        if (edit is Insert && condition is OnIndex && condition.check(input, input.size)) {
+            return edit.apply(input, input.size)
+        }
         return null
     }
 
@@ -111,7 +114,7 @@ class WholeExplanation(val explanations: List<Explanation>) {
      */
     fun apply(secondInput: List<String>): List<String>? {
         var result = secondInput
-        for (explanation in explanations) {
+        for (explanation in explanations.reversed()) {
             result = explanation.apply(result) ?: return null
         }
         return result
