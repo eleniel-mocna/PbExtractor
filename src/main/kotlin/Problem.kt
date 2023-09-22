@@ -1,5 +1,3 @@
-import kotlinx.serialization.Contextual
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -34,7 +32,7 @@ data class Problem(val examples: MutableList<Example>) {
 
     companion object {
         private val prettyJson = Json {
-            prettyPrint = true;
+            prettyPrint = true
         }
     }
 
