@@ -134,7 +134,7 @@ class WholeExplanation(val explanations: List<Explanation>) {
  */
 fun getExplanations(input: List<String>, output: List<String>): Sequence<WholeExplanation> {
     val edits = getEdits(input, output)
-    if (edits.size > 10) {
+    if (edits.size > 8) {
         return emptySequence()
     }
     return getExplanationsRecursive(input, edits)
