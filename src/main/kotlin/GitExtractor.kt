@@ -1,12 +1,41 @@
-import GitExtractor.Companion.file
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.sync.Mutex
 import java.io.File
+import java.util.concurrent.atomic.AtomicInteger
 
-class GitExtractor(private val directory: File) {
-    companion object {
-        val file = File("gitExtractor.diff")
+/**
+ * A class that extracts diffs from a Git repository and saves them to a file.
+ *
+ * This is the main class for running the extraction.
+ *
+ * @property directory The directory of the Git repository.
+ * @property resultFile The file to save the extracted problems.
+ */
+class GitExtractor(private val directory: File, private val resultFile: File) {
+
+    /**
+     * Extracts problems from Git commits and saves them to a file.
+     *
+     * This method prepares a result file, retrieves the list of commits from Git,
+     * and then iterates over the commits in parallel. For each commit, it retrieves
+     * the diff and saves the problems to the result file. Finally, it finishes the
+     * result file.
+     */
+    fun extractFromGitToFile() {
+        prepareResultFile()
+        val commitList = getCommits().toList()
+        val progress = AtomicInteger()
+        commitList.parallelStream().forEach {
+            val progressCount = progress.incrementAndGet()
+            if (progressCount % 100 == 0) {
+                println("$progressCount / ${commitList.size}")
+            }
+            saveProblems(getDiff(it))
+        }
+        finishResultFile()
     }
 
-    fun getCommits(): Sequence<String> {
+    private fun getCommits(): Sequence<String> {
         val process = Runtime.getRuntime().exec("git log --all", null, directory)
         val processOutputReader = process.inputStream.bufferedReader()
         return processOutputReader.lineSequence()
@@ -14,54 +43,64 @@ class GitExtractor(private val directory: File) {
             .map { it.split(" ")[1] }
     }
 
-    fun getDiff(commit: String): Sequence<String> {
+    private fun getDiff(commit: String): Sequence<String> {
         val process = Runtime.getRuntime().exec("git diff $commit~ $commit", null, directory)
         val processOutputReader = process.inputStream.bufferedReader()
         return processOutputReader.lineSequence()
     }
 
-    fun saveProblemToFile(problem: Problem) {
+    private val outputFileMutex: Mutex = Mutex()
+
+    private suspend fun saveProblemToFile(problem: Problem) {
+        outputFileMutex.lock()
         if (problem.examples.size > 1) {
-            problem.examples.forEach {
-                file.appendText("${it.cleanInput}\n")
-                file.appendText("${it.cleanOutput}\n")
-            }
-            file.appendText("\n")
+            this.resultFile.appendText(problem.toJson() + ",\n")
         }
+        outputFileMutex.unlock()
     }
 
-    fun saveProblems(diff: Sequence<String>) {
+    private fun saveProblems(diff: Sequence<String>) {
         var currentProblem = Problem()
         var currentInput: Sample? = null
         diff.forEach { line ->
             if (line.startsWith("- ")) {
-                currentInput = Sample(line.substring(2))
+                currentInput = Sample(line.substring(2).trim())
             } else if (line.startsWith("+ ") && currentInput != null) {
-                val output = Sample(line.substring(2))
+                val output = Sample(line.substring(2).trim())
                 if (currentInput!!.isSimilar(output)) {
                     currentProblem.addExample(Example(currentInput!!, output))
                 } else {
-                    saveProblemToFile(currentProblem)
+                    runBlocking {
+                        saveProblemToFile(currentProblem)
+                    }
                     currentProblem = Problem()
                 }
                 currentInput = null
-
             }
-
         }
     }
 
-    fun extractFromGitToFile() {
-        file.delete()
-        getCommits().forEach {
-            saveProblems(getDiff(it))
-        }
+    private fun prepareResultFile() {
+        this.resultFile.writeText("[\n")
+    }
+
+
+    private fun finishResultFile() {
+        this.resultFile.appendText("\n]")
     }
 
 }
 
-fun main() {
-
-    val gitExtractor = GitExtractor(File("../TypeScript"))
+fun main(args: Array<String>) {
+    val repoPath: String
+    val outputFile: String
+    if (args.size == 2) {
+        repoPath = args[0]
+        outputFile = args[1]
+    } else {
+        repoPath = "."
+        outputFile = "problems.json"
+    }
+    val gitExtractor = GitExtractor(File(repoPath), File(outputFile))
     gitExtractor.extractFromGitToFile()
 }
