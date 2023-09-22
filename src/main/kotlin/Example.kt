@@ -47,18 +47,6 @@ data class Example(
     }
 
     /**
-     * Returns whether the object is synthesizable from itself.
-     *
-     * This method is used to generate an explanation for each Example object and to prune Examples that the simple
-     * program synthesis algorithm cannot synthesize (e.g. when more tokens influence each other).
-     *
-     * @return true if the object is self synthesizable, false otherwise.
-     */
-    fun isSelfSynthesizable(): Boolean {
-        return isSynthesizable(this)
-    }
-
-    /**
      * Determines whether the current Example object is synthesizable from the provided Example object.
      *
      * @param other The Example object to compare with.
