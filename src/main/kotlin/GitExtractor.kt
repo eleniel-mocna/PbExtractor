@@ -53,7 +53,7 @@ class GitExtractor(private val directory: File, private val resultFile: File) {
 
     private suspend fun saveProblemToFile(problem: Problem) {
         outputFileMutex.lock()
-        if (problem.examples.size > 1) {
+        if (problem.examples.size > 1 && problem.synthesizableFromFirstSum() > 1) {
             this.resultFile.appendText(problem.toJson() + ",\n")
         }
         outputFileMutex.unlock()

@@ -55,4 +55,8 @@ data class Problem(val examples: MutableList<Example>) {
     fun toJson(): String {
         return prettyJson.encodeToString(this)
     }
+
+    fun synthesizableFromFirstSum(): Int =
+        synthesizableFromFirst.map { if (it) 1 else 0 }.sum() // sumOf has some ambiguity issue -?-
+
 }
