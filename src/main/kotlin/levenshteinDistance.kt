@@ -39,6 +39,15 @@ data class Replace(override val index: Int, val oldText: List<String>, val newTe
 
 }
 
+/**
+ * Retrieves the list of edits required to transform one list of strings into another.
+ *
+ * Here edits are understood in the levenshtein distance sense, i.e. insertions, deletions and replacements.
+ *
+ * @param s1 The original list of strings.
+ * @param s2 The target list of strings.
+ * @return The list of edits, in the order they need to be applied, to transform s1 into s2.
+ */
 fun getEdits(s1: List<String>, s2: List<String>): List<TextEdit> {
     val len1 = s1.size
     val len2 = s2.size
