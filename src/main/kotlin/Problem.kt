@@ -33,7 +33,7 @@ data class Problem(val examples: MutableList<Example>) {
         distanceFromFirst.add(distanceFromFirst(example))
     }
 
-    private fun distanceFromFirst(example: Example): Double {
+    fun distanceFromFirst(example: Example): Double {
         return if (examples.isNotEmpty()) {
             examples.first().distance(example)
         } else 0.0
