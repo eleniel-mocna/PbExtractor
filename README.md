@@ -4,6 +4,9 @@ This repository contains a simple tool for extracting
 possible [Programming by Example](https://en.wikipedia.org/wiki/Programming_by_example) problems from a given git
 repository using a simple program synthesis algorithm for data filtering.
 
+It has been created as a of [NPFL101](https://ufal.mff.cuni.cz/courses/npfl101) course
+at [MFF UK](https://www.mff.cuni.cz/en).
+
 ## Usage
 
 To run this tool, Java 11 and Gradle 7.4.2 is needed. All other will be downloaded by gradle.
@@ -113,5 +116,27 @@ for more pleasant use.
 
 ## Dataset
 
-There is a dataset generated from the [intellij-community](https://github.com/JetBrains/intellij-community) provided
-with this framework. Its location is going to be added by EOD.
+There is
+a [dataset](https://github.com/eleniel-mocna/PbExtractor/blob/74705ad0328c32480826bfcdab5652df7ff21945/data/intellij-community.json.tar.gz)
+generated from the [intellij-community](https://github.com/JetBrains/intellij-community) provided
+with this framework.
+
+You can just extract it and use it for your experiments:
+
+```bash
+tar -xzf .\data\intellij-community.json.tar.gz
+```
+
+This dataset was generated using the following command:
+
+```bash
+./gradlew run -PexecArgs="../intellij-community,intellij-community.json,200000"
+```
+
+Because of multithreading, a newly generated dataset may differ from the one provided.
+
+## License
+
+This project is governed by the Apache 2.0 license. See [LICENSE](LICENSE) for details.
+
+Copyright 2023, Samuel Soukup <soukup.sam@gmail.com>
