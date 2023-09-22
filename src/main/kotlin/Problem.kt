@@ -25,7 +25,6 @@ data class Problem(val examples: MutableList<Example>) {
      * @param example The example to be added.
      */
     fun addExample(example: Example) {
-        example.isSelfSynthesizable() // this caches some data in the example (and I can't get rid of this line however I try)
         if (example.input.text.trim() == example.output.text.trim()) {
             return
         }

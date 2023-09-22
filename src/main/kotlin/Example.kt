@@ -21,7 +21,7 @@ data class Example(
     @OptIn(ExperimentalSerializationApi::class)
     @EncodeDefault
     val edits: String = getEdits(input.splitText, output.splitText).joinToString(separator = ",") { it.toString() }
-    private lateinit var explanation: WholeExplanation
+    private var explanation: WholeExplanation? = null
     private val size = min(input.size, output.size)
     private val innerDistance = input.distance(output) / size
 
