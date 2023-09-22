@@ -21,9 +21,9 @@ class GitExtractor(private val directory: File, private val resultFile: File) {
      * the diff and saves the problems to the result file. Finally, it finishes the
      * result file.
      */
-    fun extractFromGitToFile() {
+    fun extractFromGitToFile(limit: Int = Int.MAX_VALUE) {
         prepareResultFile()
-        val commitList = getCommits().toList()
+        val commitList = getCommits().take(limit).toList()
         val progress = AtomicInteger()
         commitList.parallelStream().forEach {
             val progressCount = progress.incrementAndGet()
@@ -86,7 +86,7 @@ class GitExtractor(private val directory: File, private val resultFile: File) {
 
 
     private fun finishResultFile() {
-        this.resultFile.appendText("\n]")
+        this.resultFile.appendText("{}\n]")
     }
 
 }
@@ -94,13 +94,15 @@ class GitExtractor(private val directory: File, private val resultFile: File) {
 fun main(args: Array<String>) {
     val repoPath: String
     val outputFile: String
-    if (args.size == 2) {
+    val limit: Int = if (args.size==3) args[2].toInt() else 0
+    if (args.size >= 2) {
         repoPath = args[0]
         outputFile = args[1]
     } else {
         repoPath = "."
         outputFile = "problems.json"
     }
+    println("Extracting from $repoPath to $outputFile (limit: $limit commits)")
     val gitExtractor = GitExtractor(File(repoPath), File(outputFile))
-    gitExtractor.extractFromGitToFile()
+    gitExtractor.extractFromGitToFile(limit)
 }
