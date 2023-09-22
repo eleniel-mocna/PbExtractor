@@ -58,4 +58,7 @@ data class Problem(val examples: MutableList<Example>) {
     fun synthesizableFromFirstSum(): Int =
         synthesizableFromFirst.map { if (it) 1 else 0 }.sum() // sumOf has some ambiguity issue -?-
 
+    fun isSimilarToFirst(example: Example): Boolean = distanceFromFirst(example) < Config.instance.maxProgramDistance
+
+
 }

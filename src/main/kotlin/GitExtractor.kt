@@ -69,7 +69,7 @@ class GitExtractor(private val directory: File, private val resultFile: File) {
                 val output = Sample(line.substring(2).trim())
                 if (!currentInput!!.isSimilar(output)) return@forEach
                 val newExample = Example(currentInput!!, output)
-                if (currentProblem.distanceFromFirst(newExample) < 0.5) currentProblem.addExample(newExample) else {
+                if (currentProblem.isSimilarToFirst(newExample)) currentProblem.addExample(newExample) else {
                     runBlocking { saveProblemToFile(currentProblem) }
                     currentProblem = Problem()
                 }
@@ -92,7 +92,7 @@ class GitExtractor(private val directory: File, private val resultFile: File) {
 fun main(args: Array<String>) {
     val repoPath: String
     val outputFile: String
-    val limit: Int = if (args.size == 3) args[2].toInt() else 20000
+    val limit: Int = if (args.size == 3) args[2].toInt() else Int.MAX_VALUE
     if (args.size >= 2) {
         repoPath = args[0]
         outputFile = args[1]

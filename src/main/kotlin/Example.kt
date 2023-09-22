@@ -43,7 +43,7 @@ data class Example(
      * @return true if the more expensive steps should be performed on the Example object to see if this meets PbE criteria.
      */
     fun isSimilar(other: Example): Boolean {
-        return distance(other) < 0.5
+        return distance(other) < Config.instance.maxExampleDistance
     }
 
     /**

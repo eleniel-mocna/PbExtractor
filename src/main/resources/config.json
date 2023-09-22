@@ -1,0 +1,6 @@
+{
+  "maxEditSize": 8,
+  "maxExampleDistance": 0.5,
+  "maxSampleDistance": 0.5,
+  "maxProgramDistance": 0.5
+}
