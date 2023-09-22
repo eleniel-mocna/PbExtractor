@@ -1,0 +1,6 @@
+SYNTHESIZABLE_FROM_FIRST = "synthesizableFromFirst"
+EXAMPLES = "examples"
+INPUT = "input"
+OUTPUT = "output"
+TEXT = "text"
+EDITS = "edits"
