@@ -33,6 +33,9 @@ data class Sample(val text: String) {
      * @return true if the more expensive steps should be performed on the Sample object to see if this meets PbE criteria.
      */
     fun isSimilar(other: Sample): Boolean {
+        if (size > 10000 || other.size > 10000) {
+            return false
+        }
         return distance(other) < Config.instance.maxSampleDistance
     }
 }
