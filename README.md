@@ -92,7 +92,7 @@ And for checking whether a given operation is applicable to a given example, we 
 - `OnIndex(index)` - the operation is applicable on the given index
 - `PreviousToken(token)` - the operation is applicable on the token before the given token
 - `NextToken(token)` - the operation is applicable on the token after the given token
-- `ThisToken` - the operation is applicable on the given token
+- `ThisToken(token)` - the operation is applicable on the given token
 
 Then we use a simple DFS in the space of all programs to find a program, which generates the output from the input.
 We describe an `x` synthesizable by `y` when there exists a program `p` such that `p(x) = y`.
@@ -103,11 +103,13 @@ as these are out of the scope of this project.
 
 ## Python usage
 
-We also provide a python notebook and a python script showing, how to use the output in python. We create simple
+We also provide a python notebook (`main/src/python/main.ipynb`) showing, how to use the output in python. We create simple
 features definitions for the generated problems and use these to
 
 - create visualization using t-SNE and
 - train a simple classifier for predicting whether a given problem is synthesizable from the first example.
+
+To run the notebook, first extract the dataset (see below) and then run the notebook.
 
 ## Config
 
