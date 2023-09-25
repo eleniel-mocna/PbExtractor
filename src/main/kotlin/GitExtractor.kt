@@ -97,7 +97,7 @@ fun main(args: Array<String>) {
         repoPath = args[0]
         outputFile = args[1]
     } else {
-        repoPath = "../intellij-community"
+        repoPath = "."
         outputFile = "problems.json"
     }
     println("Extracting from $repoPath to $outputFile (limit: $limit commits)")
