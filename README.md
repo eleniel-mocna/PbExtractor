@@ -14,14 +14,14 @@ To run this tool, Java 11 and Gradle 7.4.2 is needed. All other will be download
 To run the tool, use the following command:
 
 ```bash
-gradle run -PexecArgs="<path_to_source_repository>,<output_json_file>,<commit_limit>"
+./gradlew run -PexecArgs="<path_to_source_repository>,<output_json_file>,<commit_limit>"
 ```
 
 For example, to run the tool on the intellij-community repository in the same folder as this one, use the following
 command:
 
 ```bash
-gradle run -PexecArgs="../intellij-community,intellij-community.json,200000"
+./gradlew run -PexecArgs="../intellij-community,intellij-community.json,200000"
 ```
 
 The output file will be created in the root of this repository.
