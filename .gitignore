@@ -1,6 +1,5 @@
 /.gradle
 /.idea
 /build
-/gradle
 problems.json
 venv
